@@ -1,0 +1,30 @@
+root GPIO_OUT_W1TS = 0x60004008;
+root GPIO_OUT_W1TC = 0x6000400C;
+root GPIO_ENABLE_W1TS = 0x60004024;
+root GPIO_IN = 0x6000403C;
+root IO_MUX_GPIO8 = 0x60009024;
+root IO_MUX_GPIO9 = 0x60009028;
+root LED_BIT = 1 << 8;
+root BOOT_BIT = 1 << 9;
+
+fn led_on() {
+    poke(GPIO_OUT_W1TC, LED_BIT);
+}
+
+fn led_off() {
+    poke(GPIO_OUT_W1TS, LED_BIT);
+}
+
+fn led_setup() {
+    poke(IO_MUX_GPIO8, 0x1000);
+    poke(GPIO_ENABLE_W1TS, LED_BIT);
+    led_off();
+}
+
+fn boot_button_setup() {
+    poke(IO_MUX_GPIO9, 0x1280);
+}
+
+fn boot_button_read() {
+    return peek(GPIO_IN) & BOOT_BIT;
+}

@@ -1,0 +1,47 @@
+include "delay";
+include "gpio_esp32";
+
+root DASH_THRESHOLD = 150000;
+root SILENT_LIMIT = 60;
+
+fn blink_feedback() {
+    led_on();
+    delay(60000);
+    led_off();
+}
+
+fn morse_read_symbol() {
+    let code = 1;
+    let got_symbol = 0;
+    let last = BOOT_BIT;
+    let silent = 0;
+
+    while (silent < SILENT_LIMIT) {
+        let now = boot_button_read();
+        if ((last != 0) && (now == 0)) {
+            delay(30000);
+            let dur = 0;
+            while (boot_button_read() == 0) {
+                dur = dur + 1;
+            }
+            delay(30000);
+            let sym = 0;
+            if (dur >= DASH_THRESHOLD) {
+                sym = 1;
+            }
+            code = code * 2 + sym;
+            got_symbol = 1;
+            silent = 0;
+            blink_feedback();
+            now = BOOT_BIT;
+        }
+        last = now;
+        silent = silent + 1;
+        delay(50000);
+    }
+
+    if (got_symbol == 1) {
+        return code;
+    }
+    return 0;
+}

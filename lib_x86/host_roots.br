@@ -1,0 +1,4 @@
+root HOSTED = 1;
+root BASE = 0x400000;
+root DATA = 0x500000;
+root STACK = 0x600000;

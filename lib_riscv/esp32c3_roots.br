@@ -1,0 +1,3 @@
+root BASE = 0x42000008;
+root STACK = 0x3FC9F000;
+root DATA = 0x3FC8F000;

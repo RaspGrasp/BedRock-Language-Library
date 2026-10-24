@@ -1,0 +1,30 @@
+root SYS_READ = 0;
+root SYS_WRITE = 1;
+root SYS_OPEN = 2;
+root SYS_CLOSE = 3;
+root SYS_EXIT = 60;
+
+root O_RDONLY = 0;
+root O_RDWR = 2;
+root O_NOCTTY = 256;
+root O_NONBLOCK = 2048;
+
+fn sys_write(fd, buf, len) {
+    return syscall(SYS_WRITE, fd, buf, len);
+}
+
+fn sys_read(fd, buf, count) {
+    return syscall(SYS_READ, fd, buf, count);
+}
+
+fn sys_open(path, flags) {
+    return syscall(SYS_OPEN, path, flags, 0);
+}
+
+fn sys_close(fd) {
+    return syscall(SYS_CLOSE, fd);
+}
+
+fn sys_exit(code) {
+    syscall(SYS_EXIT, code);
+}

@@ -1,0 +1,7 @@
+fn peek_byte(addr) {
+    return peek(addr) & 255;
+}
+
+fn poke_byte(addr, val) {
+    poke(addr, val & 255);
+}

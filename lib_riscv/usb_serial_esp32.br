@@ -1,0 +1,14 @@
+root USB_EP1 = 0x60043000;
+root USB_EP1_CONF = 0x60043004;
+
+fn serial_send_char(c) {
+    while ((peek(USB_EP1_CONF) & 2) == 0) {
+    }
+    poke(USB_EP1, c);
+    poke(USB_EP1_CONF, 1);
+}
+
+fn serial_send_line(c) {
+    serial_send_char(c);
+    serial_send_char(10);
+}

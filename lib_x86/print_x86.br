@@ -1,0 +1,5 @@
+include "sys_x86";
+
+fn print(buf, len) {
+    return sys_write(1, buf, len);
+}
