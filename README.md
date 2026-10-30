@@ -8,11 +8,11 @@ The applications and core libraries contained herein demonstrate the platform's 
 
 ## Repository Structure
 
-lib_common/
-lib_riscv/
-lib_x86/
-examples/esp32c3/
-tooling/
+- `lib_common/`       — shared, target-independent BedRock libraries 
+- `lib_riscv/`        — RISC-V (ESP32-C3) bare-metal libraries: GPIO, serial, watchdog, memory
+- `lib_x86/`          — x86-64 hosted libraries for Linux native tools
+- `examples/esp32c3/` — example applications targeting the ESP32-C3 board
+- `tooling/`          — build and packaging utilities (e.g. `pack_direct_boot.py`)
 
 ## Target Hardware Specifications
 
