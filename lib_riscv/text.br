@@ -1,0 +1,57 @@
+fn serial_print_menu() {
+    serial_nl();
+    serial_send_char(66);
+    serial_send_char(82);
+    serial_send_char(51);
+    serial_nl();
+    serial_send_char(49);
+    serial_send_char(32);
+    serial_send_char(77);
+    serial_nl();
+    serial_send_char(50);
+    serial_send_char(32);
+    serial_send_char(66);
+    serial_nl();
+    serial_send_char(51);
+    serial_send_char(32);
+    serial_send_char(67);
+    serial_nl();
+    serial_send_char(83);
+    serial_send_char(61);
+    serial_send_char(99);
+    serial_send_char(121);
+    serial_send_char(99);
+    serial_send_char(32);
+    serial_send_char(76);
+    serial_send_char(61);
+    serial_send_char(114);
+    serial_send_char(117);
+    serial_send_char(110);
+    serial_nl();
+}
+
+fn serial_print_sel(s) {
+    s = s & 255;
+    serial_send_char(62);
+    serial_send_char(32);
+    serial_send_char(49 + s);
+    serial_nl();
+}
+
+fn serial_print_run(s) {
+    s = s & 255;
+    serial_send_char(82);
+    serial_send_char(85);
+    serial_send_char(78);
+    serial_send_char(32);
+    serial_send_char(49 + s);
+    serial_nl();
+}
+
+fn serial_print_menu_word() {
+    serial_send_char(77);
+    serial_send_char(69);
+    serial_send_char(78);
+    serial_send_char(85);
+    serial_nl();
+}
