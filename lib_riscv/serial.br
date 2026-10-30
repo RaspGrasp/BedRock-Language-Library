@@ -1,0 +1,19 @@
+root USB_EP1      = 0x60043000;
+root USB_EP1_CONF = 0x60043004;
+
+fn serial_send_char(c) {
+    let wait = 0;
+    while ((peek(USB_EP1_CONF) & 2) == 0) {
+        wait = wait + 1;
+        if (wait > 1000000) {
+            return;
+        }
+    }
+    poke(USB_EP1, c);
+    poke(USB_EP1_CONF, 1);
+}
+
+fn serial_nl() {
+    serial_send_char(13);
+    serial_send_char(10);
+}
