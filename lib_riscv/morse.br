@@ -1,0 +1,71 @@
+root DASH_THRESHOLD = 150000;
+root SILENT_LIMIT   = 60;
+
+fn decode_and_send(code) {
+    if (code == 5)  { serial_send_char(65); serial_nl(); return; }
+    if (code == 24) { serial_send_char(66); serial_nl(); return; }
+    if (code == 26) { serial_send_char(67); serial_nl(); return; }
+    if (code == 12) { serial_send_char(68); serial_nl(); return; }
+    if (code == 2)  { serial_send_char(69); serial_nl(); return; }
+    if (code == 18) { serial_send_char(70); serial_nl(); return; }
+    if (code == 14) { serial_send_char(71); serial_nl(); return; }
+    if (code == 16) { serial_send_char(72); serial_nl(); return; }
+    if (code == 4)  { serial_send_char(73); serial_nl(); return; }
+    if (code == 23) { serial_send_char(74); serial_nl(); return; }
+    if (code == 13) { serial_send_char(75); serial_nl(); return; }
+    if (code == 20) { serial_send_char(76); serial_nl(); return; }
+    if (code == 7)  { serial_send_char(77); serial_nl(); return; }
+    if (code == 6)  { serial_send_char(78); serial_nl(); return; }
+    if (code == 15) { serial_send_char(79); serial_nl(); return; }
+    if (code == 22) { serial_send_char(80); serial_nl(); return; }
+    if (code == 29) { serial_send_char(81); serial_nl(); return; }
+    if (code == 10) { serial_send_char(82); serial_nl(); return; }
+    if (code == 8)  { serial_send_char(83); serial_nl(); return; }
+    if (code == 3)  { serial_send_char(84); serial_nl(); return; }
+    if (code == 9)  { serial_send_char(85); serial_nl(); return; }
+    if (code == 17) { serial_send_char(86); serial_nl(); return; }
+    if (code == 11) { serial_send_char(87); serial_nl(); return; }
+    if (code == 25) { serial_send_char(88); serial_nl(); return; }
+    if (code == 27) { serial_send_char(89); serial_nl(); return; }
+    if (code == 28) { serial_send_char(90); serial_nl(); return; }
+    serial_send_char(63);
+    serial_nl();
+}
+
+fn morse_read_letter() {
+    let code = 1;
+    let got_symbol = 0;
+    let last = BOOT_BIT;
+    let silent = 0;
+
+    while (silent < SILENT_LIMIT) {
+        let now = peek(GPIO_IN) & BOOT_BIT;
+
+        if ((last != 0) && (now == 0)) {
+            delay(30000);
+            let dur = 0;
+            while ((peek(GPIO_IN) & BOOT_BIT) == 0) {
+                dur = dur + 1;
+            }
+            delay(30000);
+
+            let sym = 0;
+            if (dur >= DASH_THRESHOLD) {
+                sym = 1;
+            }
+            code = code * 2 + sym;
+            got_symbol = 1;
+            silent = 0;
+            blink_feedback();
+            now = BOOT_BIT;
+        }
+
+        last = now;
+        silent = silent + 1;
+        delay(50000);
+    }
+
+    if (got_symbol == 1) {
+        decode_and_send(code);
+    }
+}
