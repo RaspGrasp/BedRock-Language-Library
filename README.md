@@ -8,9 +8,11 @@ The applications and core libraries contained herein demonstrate the platform's 
 
 ## Repository Structure
 
-- `core-libs/`: Core hardware drivers and system stabilization packages.
-- `examples/`: Production-ready interactive applications on physical hardware.
-- `tooling/`: Automation utilities for target-specific image encapsulation.
+lib_common/
+lib_riscv/
+lib_x86/
+examples/esp32c3/
+tooling/
 
 ## Target Hardware Specifications
 
