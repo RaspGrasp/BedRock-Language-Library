@@ -1,0 +1,52 @@
+fn k_print_char(c) {
+    serial_send_char(c);
+}
+
+fn k_nl() {
+    serial_nl();
+}
+
+fn k_print_u32(v) {
+    let x = v;
+    if (x == 0) {
+        k_print_char(48);
+        return;
+    }
+    let d0 = 0;
+    let d1 = 0;
+    let d2 = 0;
+    let d3 = 0;
+    let d4 = 0;
+    let d5 = 0;
+    let d6 = 0;
+    let d7 = 0;
+    let d8 = 0;
+    let d9 = 0;
+    let n = 0;
+    while (x > 0) {
+        let dig = x - (x / 10) * 10;
+        if (n == 0) { d0 = dig; }
+        if (n == 1) { d1 = dig; }
+        if (n == 2) { d2 = dig; }
+        if (n == 3) { d3 = dig; }
+        if (n == 4) { d4 = dig; }
+        if (n == 5) { d5 = dig; }
+        if (n == 6) { d6 = dig; }
+        if (n == 7) { d7 = dig; }
+        if (n == 8) { d8 = dig; }
+        if (n == 9) { d9 = dig; }
+        n = n + 1;
+        x = x / 10;
+        if (n > 9) { x = 0; }
+    }
+    if (n > 9) { k_print_char(48 + d9); }
+    if (n > 8) { k_print_char(48 + d8); }
+    if (n > 7) { k_print_char(48 + d7); }
+    if (n > 6) { k_print_char(48 + d6); }
+    if (n > 5) { k_print_char(48 + d5); }
+    if (n > 4) { k_print_char(48 + d4); }
+    if (n > 3) { k_print_char(48 + d3); }
+    if (n > 2) { k_print_char(48 + d2); }
+    if (n > 1) { k_print_char(48 + d1); }
+    if (n > 0) { k_print_char(48 + d0); }
+}
