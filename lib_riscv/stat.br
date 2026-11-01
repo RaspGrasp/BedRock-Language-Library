@@ -1,0 +1,19 @@
+fn stat_dump(tick_addr, mode_addr) {
+    k_print_char(85);
+    k_print_char(80);
+    k_print_char(32);
+    k_print_u32(peek(tick_addr));
+    k_nl();
+    k_print_char(80);
+    k_print_char(32);
+    k_print_u32(peek(PRESS_N));
+    k_nl();
+    k_print_char(76);
+    k_print_char(32);
+    k_print_u32(peek(LONG_N));
+    k_nl();
+    k_print_char(77);
+    k_print_char(32);
+    k_print_u32(peek(mode_addr));
+    k_nl();
+}
