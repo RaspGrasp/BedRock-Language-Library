@@ -1,0 +1,26 @@
+root DASH_THRESHOLD = 150000;
+
+fn read_boot_gesture() {
+    if (boot_down() == 0) {
+        return 0;
+    }
+    delay(30000);
+    if (boot_down() == 0) {
+        return 0;
+    }
+    let dur = 0;
+    while (boot_down() == 1) {
+        dur = dur + 1;
+        if (dur > 2000000) {
+            break;
+        }
+    }
+    delay(30000);
+    if (dur < 20000) {
+        return 0;
+    }
+    if (dur < DASH_THRESHOLD) {
+        return 1;
+    }
+    return 2;
+}
