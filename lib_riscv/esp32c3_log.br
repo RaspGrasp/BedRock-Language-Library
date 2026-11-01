@@ -1,0 +1,53 @@
+root LOG_HEAD = 0x3FC8F220;
+root LOG_BASE = 0x3FC8F300;
+root PRESS_N  = 0x3FC8F20C;
+root LONG_N   = 0x3FC8F210;
+
+fn log_init() {
+    poke(LOG_HEAD, 0);
+    poke(PRESS_N, 0);
+    poke(LONG_N, 0);
+    let i = 0;
+    while (i < 16) {
+        poke(LOG_BASE + i * 8, 0);
+        poke(LOG_BASE + i * 8 + 4, 0);
+        i = i + 1;
+    }
+}
+
+fn log_event(kind, tick_addr) {
+    let h = peek(LOG_HEAD);
+    h = h & 15;
+    let addr = LOG_BASE + h * 8;
+    poke(addr, kind);
+    poke(addr + 4, peek(tick_addr));
+    h = h + 1;
+    if (h > 15) { h = 0; }
+    poke(LOG_HEAD, h);
+    poke(PRESS_N, peek(PRESS_N) + 1);
+    if (kind == 2) {
+        poke(LONG_N, peek(LONG_N) + 1);
+    }
+}
+
+fn log_dump() {
+    k_print_char(76);
+    k_print_char(79);
+    k_print_char(71);
+    k_nl();
+    let i = 0;
+    while (i < 16) {
+        let addr = LOG_BASE + i * 8;
+        let kind = peek(addr);
+        let ts = peek(addr + 4);
+        if (kind != 0) {
+            k_print_char(48 + i);
+            k_print_char(58);
+            k_print_char(48 + (kind & 255));
+            k_print_char(64);
+            k_print_u32(ts);
+            k_nl();
+        }
+        i = i + 1;
+    }
+}
