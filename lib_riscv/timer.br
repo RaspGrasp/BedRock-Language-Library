@@ -1,0 +1,46 @@
+root SW_STATE = 0x3FC8F214;
+root SW_START = 0x3FC8F218;
+root SW_ACC   = 0x3FC8F21C;
+
+fn timer_reset() {
+    poke(SW_STATE, 0);
+    poke(SW_ACC, 0);
+}
+
+fn timer_on_short(tick_addr) {
+    let st = peek(SW_STATE);
+    st = st & 255;
+    if (st == 0) {
+        poke(SW_STATE, 1);
+        poke(SW_START, peek(tick_addr));
+        k_print_char(71);
+        k_nl();
+        blink_feedback();
+        return;
+    }
+    if (st == 1) {
+        let start = peek(SW_START);
+        let now = peek(tick_addr);
+        let acc = peek(SW_ACC);
+        poke(SW_ACC, acc + (now - start));
+        poke(SW_STATE, 0);
+        k_print_char(83);
+        k_print_char(32);
+        k_print_u32(peek(SW_ACC));
+        k_nl();
+        blink_feedback();
+    }
+}
+
+fn timer_idle() {
+    let st2 = peek(SW_STATE);
+    st2 = st2 & 255;
+    if (st2 == 1) {
+        led_on();
+        delay(80000);
+        led_off();
+        delay(120000);
+        return;
+    }
+    delay(100000);
+}
